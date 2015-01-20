@@ -219,6 +219,7 @@ private:
     struct Device
     {
         OperatingSystem::WSAUDPSocket mMsgSocket;
+		OperatingSystem::WSAUDPSocket mReadSocket;
         std::string mPartNumber;
         std::string mHostName;
         unsigned long mIPAddress;
@@ -234,6 +235,7 @@ private:
         boost::mutex mReadMutex;
         boost::mutex mRecordMutex;
 
+		std::tr1::shared_ptr<boost::thread> mRecvThread;
         Device();
         Device( const Device& );
     };
@@ -332,9 +334,14 @@ private:
     bool accessGPIA( Device& aDevice, const GPIAMessage& aCmdMsg, GPIAMessage& aResultMsg );
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // readData
-    //      Thread function, used to retrieve data from GPIA periodically
-    void readData( void );
+    // sendReadCmd
+    //      Thread function, used to send read cmmand to all GPIAs periodically
+    void sendReadCmd( void );
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+    // recvData
+    //      Thread function, used to receive data from per GPIA periodically
+    void recvData( void );
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // saveData

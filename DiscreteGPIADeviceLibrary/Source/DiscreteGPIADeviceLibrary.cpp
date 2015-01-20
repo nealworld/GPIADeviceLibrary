@@ -257,9 +257,12 @@ IDiscreteDevice::Result IOACall DiscreteGPIADeviceLibrary::open( void )
         Device& lDevice = mDevices[ lIndex ];
         if ( lDevice.mIsActivated )
         {
-            if ( lDevice.mMsgSocket.open() )
+            if ( lDevice.mMsgSocket.open() && lDevice.mReadSocket.open())
             {
                 lDevice.mMsgSocket.config( false, true );
+				lDevice.mReadSocket.config(false, true);
+				lDevice.mRecvThread = std::tr1::shared_ptr<boost::thread>(
+					new boost::thread( boost::bind( &DiscreteGPIADeviceLibrary::recvData, this ) ) );
             }
             else
             {
@@ -275,7 +278,7 @@ IDiscreteDevice::Result IOACall DiscreteGPIADeviceLibrary::open( void )
         mThread = std::tr1::shared_ptr<boost::thread>(
             new boost::thread(
             boost::bind(
-            &DiscreteGPIADeviceLibrary::readData, this ) ) );
+            &DiscreteGPIADeviceLibrary::sendReadCmd, this ) ) );
         mIsOpen = true;
     }
 #if defined( _DEBUG )
@@ -302,9 +305,11 @@ IDiscreteDevice::Result IOACall DiscreteGPIADeviceLibrary::close( void )
         for ( int lIndex = 0; lIndex < mCurrentDeviceIndex; lIndex++ )
         {
             Device& lDevice = mDevices[ lIndex ];
+			lDevice.mRecvThread->join();
+			lDevice.mRecvThread.reset();
             if ( lDevice.mIsActivated )
             {
-                if ( lDevice.mMsgSocket.close() )
+				if ( lDevice.mMsgSocket.close() && lDevice.mReadSocket.close())
                 {
                     lDevice.mIsActivated = false;
                     lDevice.mBitGroups.clear();
@@ -757,7 +762,7 @@ bool DiscreteGPIADeviceLibrary::accessGPIA( Device& aDevice, const GPIAMessage& 
     lRecvBuff = NULL;
     return lResult;
 }
-
+/*
 void DiscreteGPIADeviceLibrary::readData( void )
 {
     GPIAMessage lCmdMsg;
@@ -809,6 +814,64 @@ void DiscreteGPIADeviceLibrary::readData( void )
     }
     return;
 }
+*/
+
+void DiscreteGPIADeviceLibrary::sendReadCmd( void )
+{
+    GPIAMessage lCmdMsg;
+    lCmdMsg.setCode( GPIAMessage::Read );
+    lCmdMsg.setBitMask( 0xFF );
+    GPIAMessage lResultMsg;
+    while ( mIsOpen )
+    {
+        for ( int lIndex = 0; lIndex < mCurrentDeviceIndex; lIndex++ )
+        {
+            Device& lDevice = mDevices[ lIndex ];
+            if ( lDevice.mIsActivated )
+            {
+                std::set<int>::iterator lPortIter = lDevice.mDefinedPort.begin();
+                for ( ; lPortIter != lDevice.mDefinedPort.end(); lPortIter++ )
+                {
+                    int lPort = *lPortIter;
+                    lCmdMsg.setPortNumber( lPort );
+
+
+
+                    if ( accessGPIA( lDevice, lCmdMsg, lResultMsg ) )
+                    {
+                        lDevice.mReadMutex.lock();
+                        lDevice.mPortCache[ lPort ].first = lResultMsg.getData();
+                        //only if the status is normal, set the validity to true
+                        lDevice.mPortCache[ lPort ].second = ( lResultMsg.getStatus() == GPIAMessage::Normal );
+                        lDevice.mReadMutex.unlock();
+
+                        lDevice.mRecordMutex.lock();
+                        if ( lDevice.mIsRecording )
+                        {
+                            if ( !saveData( lIndex, lPort, lResultMsg.getData() ) )
+                            {
+                                lDevice.mIsRecording = false;
+                                lDevice.mRecordingStream.close();
+                            }
+                        }
+                        lDevice.mRecordMutex.unlock();
+                    }
+                    else
+                    {
+                        lDevice.mReadMutex.lock();
+                        //if no response from GPIA, set the validity of the data to false
+                        lDevice.mPortCache[ lPort ].second = false;
+                        lDevice.mReadMutex.unlock();
+                    }
+                }
+            }
+        }
+        Sleep( fLoopPeriod );
+    }
+    return;
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // saveData
@@ -862,7 +925,9 @@ DiscreteGPIADeviceLibrary::Device::Device( const Device& aDevice )
     mDefinedPort( aDevice.mDefinedPort ),
     mPortCache( aDevice.mPortCache ),
     mMsgSocket(),
-    mRecordingStream()
+    mRecordingStream(),
+	mReadSocket(),
+	mRecvThread()
 {
     return;
 }
