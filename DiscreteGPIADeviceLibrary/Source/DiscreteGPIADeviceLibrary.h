@@ -18,7 +18,7 @@
 #include <set>
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
-
+  
 #if !defined ( IOA_IDISCRETEDEVICE_H )
     #include "IOA/IDiscreteDevice.h"
 #endif
@@ -232,12 +232,13 @@ private:
         bool mIsRecording;
 
         boost::mutex mSocketMutex;
-        boost::mutex mReadMutex;
+		boost::mutex mReadMutex;
         boost::mutex mRecordMutex;
 
-		std::tr1::shared_ptr<boost::thread> mRecvThread;
         Device();
         Device( const Device& );
+
+		unsigned int count;
     };
 
     struct BitGroup
@@ -334,21 +335,21 @@ private:
     bool accessGPIA( Device& aDevice, const GPIAMessage& aCmdMsg, GPIAMessage& aResultMsg );
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // sendReadCmd
-    //      Thread function, used to send read cmmand to all GPIAs periodically
-    void sendReadCmd( void );
+    // readData
+    //      Thread function, used to send read data from all GPIAs periodically
+    void readData( void );
 
-	////////////////////////////////////////////////////////////////////////////////////////////////
-    // recvData
-    //      Thread function, used to receive data from per GPIA periodically
-	// Parameters:
-	//			aDeviceIndex - a index to the device object
-	void recvData(int aDeviceIndex);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // saveData
     //
     bool saveData( int aDeviceIndex, unsigned int aPortNumber, unsigned char aData );
+
+
+	void sendAllCmds(Device& aDevice, std::map<int, bool>& aSendCmdResult_map, std::map<int, GPIAMessage>& aSendCmd_map);
+
+	void recvAll(int aCurrentDeviceIndex, std::map<int, bool>& aSendCmdResult_map, std::map<int, GPIAMessage>& aSendCmd_map);
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Member Variables
@@ -374,6 +375,7 @@ private:
 
 #if defined( _DEBUG )
     std::ofstream mErrorLogFile;
+	std::ofstream mlog;
 #endif
 };
 

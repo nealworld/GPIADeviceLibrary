@@ -1,0 +1,38 @@
+﻿Build started 1/21/2015 4:29:56 PM.
+     1>Project "D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\DiscreteGPIADevice.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\DiscreteGPIADeviceLibrary.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Debug\DiscreteGPIADeviceLibrary.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I..\..\..\..\Vendor\boost /I..\..\..\..\Library\Core /ZI /nologo /W1 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _USRDLL /D DISCRETEGPIADEVICE_EXPORTS /D DISCRETEGPIADEVICELIBRARY_FACTORY /D _AFXDLL /D _WINDLL /D _MBCS /Gm- /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd".\Debug/DiscreteGPIADevice" /Gd /TP /analyze- /errorReport:prompt ..\..\..\..\Library\Core\OperatingSystem\WSAUDPSocket.cpp ..\..\..\..\Library\Core\Tool\StringUtility.cpp DiscreteGPIADeviceLibrary.cpp GPIAMessage.cpp
+         WSAUDPSocket.cpp
+         StringUtility.cpp
+         DiscreteGPIADeviceLibrary.cpp
+         GPIAMessage.cpp
+         Generating Code...
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _DEBUG /l"0x0409" /nologo /fo"Debug\DiscreteGPIADeviceLibrary.res" DiscreteGPIADeviceLibrary.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.dll" /NOLOGO /LIBPATH:..\..\..\..\vendor\boost\stage\lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\DiscreteGPIADeviceLibrary.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.lib" /MACHINE:X86 /DLL Debug\DiscreteGPIADeviceLibrary.res
+         Debug\WSAUDPSocket.obj
+         Debug\StringUtility.obj
+         Debug\DiscreteGPIADeviceLibrary.obj
+         Debug\GPIAMessage.obj WS2_32.lib 
+            Creating library D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.lib and object D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.exp
+         DiscreteGPIADevice.vcxproj -> D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.dll
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.dll;#2" /manifest Debug\DiscreteGPIADeviceLibrary.dll.intermediate.manifest
+       PostBuildEvent:
+         copy D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\Debug\DiscreteGPIADeviceLibrary.dll ..\..\DotNetDiscreteGPIADeviceLibrary\Source
+         
+         :VCEnd
+                 1 file(s) copied.
+       FinalizeBuildStatus:
+         Deleting file "Debug\DiscreteGPIADeviceLibrary.unsuccessfulbuild".
+         Touching "Debug\DiscreteGPIADeviceLibrary.lastbuildstate".
+     1>Done Building Project "D:\Sim\Product\DiscreteGPIADeviceLibrary\DiscreteGPIADeviceLibrary\Source\DiscreteGPIADevice.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:06.97

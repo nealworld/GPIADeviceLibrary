@@ -149,16 +149,17 @@ public:
     //
     unsigned char getData( void );
 
-private:
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    // Copy constructor; private so it can not be called
+	///////////////////////////////////////////////////////////////////////////////////////////////
+    // Copy constructor
     //
-    GPIAMessage( const GPIAMessage& ){}
+    GPIAMessage( const GPIAMessage& );
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    // Assignment Operator; private so it can not be called
+    // Assignment Operator
     //
-    GPIAMessage& operator=( const GPIAMessage& ){}
+    GPIAMessage& operator=( const GPIAMessage& );
+
+private:
 
     char* mMessageContent;
     static const unsigned int cBufferSize;

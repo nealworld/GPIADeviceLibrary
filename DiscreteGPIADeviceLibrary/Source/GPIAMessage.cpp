@@ -57,6 +57,30 @@ void GPIAMessage::setPortNumber( unsigned char aPortNumber )
     return;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Copy constructor
+//
+GPIAMessage::GPIAMessage( const GPIAMessage& aAnotherMessage){
+	mMessageContent = new char[cBufferSize];
+	this->setContent(aAnotherMessage.getMessageBuffer(), aAnotherMessage.getBufferSize());
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// Assignment Operator
+//
+GPIAMessage& GPIAMessage::operator=( const GPIAMessage& aAnotherMessage){
+	if(this == &aAnotherMessage){
+		return *this;
+	}
+	if(this->mMessageContent != NULL){
+		delete this->mMessageContent;
+		this->mMessageContent = NULL;
+	}
+	this->mMessageContent = new char[cBufferSize];
+	this->setContent(aAnotherMessage.getMessageBuffer(), aAnotherMessage.getBufferSize());
+	return *this;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //  setCode
 //
