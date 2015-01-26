@@ -220,6 +220,8 @@ private:
     {
         OperatingSystem::WSAUDPSocket mMsgSocket;
 		OperatingSystem::WSAUDPSocket mReadSocket;
+		std::tr1::shared_ptr<boost::thread> mThread;
+
         std::string mPartNumber;
         std::string mHostName;
         unsigned long mIPAddress;
@@ -239,6 +241,7 @@ private:
         Device( const Device& );
 
 		unsigned int count;
+		std::ofstream mlog;
     };
 
     struct BitGroup
@@ -337,7 +340,7 @@ private:
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // readData
     //      Thread function, used to send read data from all GPIAs periodically
-    void readData( void );
+    void readData( int aDeviceIndex );
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -371,11 +374,10 @@ private:
     std::map<unsigned long, int> mDeviceMap;
     std::map<int/*bit group index*/, int/*device index*/> mBitGroupMap;
 
-    std::tr1::shared_ptr<boost::thread> mThread;
+   // std::tr1::shared_ptr<boost::thread> mThread;
 
 #if defined( _DEBUG )
     std::ofstream mErrorLogFile;
-	std::ofstream mlog;
 #endif
 };
 
