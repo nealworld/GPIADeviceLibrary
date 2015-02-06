@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<VaisSystem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.geaviation.com/vais/config">
+  <SystemVersionInfo SchemaVersion="2" FileVersion="263" VaisToolName="ConfigEditor.exe" VaisToolVersion="3.0.0.0" />
+</VaisSystem>

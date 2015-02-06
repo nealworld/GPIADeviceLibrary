@@ -948,7 +948,8 @@ void DiscreteGPIADeviceLibrary::readData( int aDeviceIndex )
 	std::map<int, GPIAMessage> lSendCmd_map;
 
 #if defined( _DEBUG )
-	mDevices[ aDeviceIndex ].mlog.open( "readDatalog.txt" + mDevices[ aDeviceIndex ].mReadSocket.IPToString( mDevices[ aDeviceIndex ].mIPAddress ) , std::ios::app);
+	mDevices[ aDeviceIndex ].mlog.open( mDevices[ aDeviceIndex ].mReadSocket.
+		IPToString( mDevices[ aDeviceIndex ].mIPAddress ) + "_readDatalog.txt" , std::ios::app);
 #endif
 
     while ( mIsOpen )

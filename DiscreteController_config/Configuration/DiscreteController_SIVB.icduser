@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+<VaisIcd xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.geaviation.com/vais/config">
+  <IcdVersionInfo SchemaVersion="8" FileVersion="263" VaisToolName="ConfigEditor.exe" VaisToolVersion="3.0.0.0" />
+  <EventChannel ChannelName="DiscreteController_Command">
+    <EventMessage MsgName="RequestDiscreteInMesh">
+      <EventParam ParamName="ConfigurationInformation" DataFormatType="String" />
+    </EventMessage>
+    <EventMessage MsgName="ToggleState">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="State" DataFormatType="Boolean" />
+    </EventMessage>
+    <EventMessage MsgName="UpdateRecordingStatus">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="RecordingStatus" DataFormatType="Boolean" />
+    </EventMessage>
+    <EventMessage MsgName="UpdateGroup">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="Group" DataFormatType="String" />
+    </EventMessage>
+    <EventMessage MsgName="UpdateDefaultValue">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="DefaultValue" DataFormatType="Boolean" />
+    </EventMessage>
+    <EventMessage MsgName="UpdateLRU" DisplayName="UpdateLRU">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="LRU" DataFormatType="String" />
+    </EventMessage>
+    <EventMessage MsgName="UpdatePinNumber" DisplayName="UpdatePinNumber">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="PinNumber" DataFormatType="Int32" />
+    </EventMessage>
+    <EventMessage MsgName="UpdateChannelName" DisplayName="UpdateChannelName">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="ChannelName" DataFormatType="String" />
+    </EventMessage>
+    <EventMessage MsgName="UpdateAssertedValue">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="AssertedValue" DataFormatType="Boolean" />
+    </EventMessage>
+    <EventMessage MsgName="BriefCommand">
+      <EventParam ParamName="CommandCode" DataFormatType="Enumeration">
+        <Enumeration ID="1" Value="StartRecording" />
+        <Enumeration ID="2" Value="StopRecording" />
+        <Enumeration ID="3" Value="SetAllToDefault" />
+      </EventParam>
+    </EventMessage>
+  </EventChannel>
+  <EventChannel ChannelName="DiscreteController_Notification">
+    <EventMessage MsgName="DiscreteState">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="State" DataFormatType="Boolean" />
+      <EventParam ParamName="Timestamp" DataFormatType="String" />
+    </EventMessage>
+    <EventMessage MsgName="DiscreteInMesh">
+      <EventParam ParamName="DiscreteName" DataFormatType="String" />
+      <EventParam ParamName="Timestamp" DataFormatType="String" />
+      <EventParam ParamName="State" DataFormatType="Boolean" />
+      <EventParam ParamName="Direction" DataFormatType="Boolean" />
+      <EventParam ParamName="DiscreteType" DataFormatType="Int32" />
+      <EventParam ParamName="DefaultState" DataFormatType="Boolean" />
+      <EventParam ParamName="Recording" DataFormatType="Boolean" />
+      <EventParam ParamName="DeviceName" DataFormatType="String" />
+      <EventParam ParamName="ChannelName" DataFormatType="String" />
+      <EventParam ParamName="Group" DataFormatType="String" />
+      <EventParam ParamName="LRU" DisplayName="LRU" DataFormatType="String" />
+      <EventParam ParamName="PortNumber" DataFormatType="Int32" />
+      <EventParam ParamName="BitNumber" DataFormatType="Int32" />
+      <EventParam ParamName="PinNumber" DataFormatType="Int32" />
+      <EventParam ParamName="AssertedValue" DataFormatType="Boolean" />
+      <EventParam ParamName="InUse" DisplayName="InUse" DataFormatType="Boolean" />
+      <EventParam ParamName="TrueState" DataFormatType="String" />
+      <EventParam ParamName="FalseState" DataFormatType="String" />
+    </EventMessage>
+  </EventChannel>
+  <DiscreteParam ParamName="TestP0B0" />
+  <DiscreteParam ParamName="TestP0B1" />
+  <DiscreteParam ParamName="TestP0B2" />
+  <DiscreteParam ParamName="TestP0B3" />
+  <DiscreteParam ParamName="TestP0B4" />
+  <DiscreteParam ParamName="TestP0B5" />
+  <DiscreteParam ParamName="TestP0B6" />
+  <DiscreteParam ParamName="TestP0B7" />
+  <DiscreteParam ParamName="TestP1B0" />
+  <DiscreteParam ParamName="TestP1B1" />
+  <DiscreteParam ParamName="TestP1B2" />
+  <DiscreteParam ParamName="TestP1B3" />
+  <DiscreteParam ParamName="TestP1B4" />
+  <DiscreteParam ParamName="TestP1B5" />
+  <DiscreteParam ParamName="TestP1B6" />
+  <DiscreteParam ParamName="TestP1B7" />
+  <DiscreteParam ParamName="TestP2B0" />
+  <DiscreteParam ParamName="TestP2B1" />
+  <DiscreteParam ParamName="TestP2B2" />
+  <DiscreteParam ParamName="TestP2B3" />
+  <DiscreteParam ParamName="TestP2B4" />
+  <DiscreteParam ParamName="TestP2B5" />
+  <DiscreteParam ParamName="TestP2B6" />
+  <DiscreteParam ParamName="TestP2B7" />
+  <DiscreteParam ParamName="TestP3B0" />
+  <DiscreteParam ParamName="TestP3B1" />
+  <DiscreteParam ParamName="TestP3B2" />
+  <DiscreteParam ParamName="TestP3B3" />
+  <DiscreteParam ParamName="TestP3B4" />
+  <DiscreteParam ParamName="TestP3B5" />
+  <DiscreteParam ParamName="TestP3B6" />
+  <DiscreteParam ParamName="TestP3B7" />
+  <DiscreteParam ParamName="TestP4B0" />
+  <DiscreteParam ParamName="TestP4B1" />
+  <DiscreteParam ParamName="TestP4B2" />
+  <DiscreteParam ParamName="TestP4B3" />
+  <DiscreteParam ParamName="TestP4B4" />
+  <DiscreteParam ParamName="TestP4B5" />
+  <DiscreteParam ParamName="TestP4B6" />
+  <DiscreteParam ParamName="TestP4B7" />
+  <DiscreteParam ParamName="TestP5B0" />
+  <DiscreteParam ParamName="TestP5B1" />
+  <DiscreteParam ParamName="TestP5B2" />
+  <DiscreteParam ParamName="TestP5B3" />
+  <DiscreteParam ParamName="TestP5B4" />
+  <DiscreteParam ParamName="TestP5B5" />
+  <DiscreteParam ParamName="TestP5B6" />
+  <DiscreteParam ParamName="TestP5B7" />
+  <DiscreteParam ParamName="TestP6B0" />
+  <DiscreteParam ParamName="TestP6B1" />
+  <DiscreteParam ParamName="TestP6B2" />
+  <DiscreteParam ParamName="TestP6B3" />
+  <DiscreteParam ParamName="TestP6B4" />
+  <DiscreteParam ParamName="TestP6B5" />
+  <DiscreteParam ParamName="TestP6B6" />
+  <DiscreteParam ParamName="TestP6B7" />
+  <DiscreteParam ParamName="TestP7B0" />
+  <DiscreteParam ParamName="TestP7B1" />
+  <DiscreteParam ParamName="TestP7B2" />
+  <DiscreteParam ParamName="TestP7B3" />
+  <DiscreteParam ParamName="TestP7B4" />
+  <DiscreteParam ParamName="TestP7B5" />
+  <DiscreteParam ParamName="TestP7B6" />
+  <DiscreteParam ParamName="TestP7B7" />
+  <DiscreteParam ParamName="TestP8B0" />
+  <DiscreteParam ParamName="TestP8B1" />
+  <DiscreteParam ParamName="TestP8B2" />
+  <DiscreteParam ParamName="TestP8B3" />
+  <DiscreteParam ParamName="TestP8B4" />
+  <DiscreteParam ParamName="TestP8B5" />
+  <DiscreteParam ParamName="TestP8B6" />
+  <DiscreteParam ParamName="TestP8B7" />
+  <DiscreteParam ParamName="TestP9B0" />
+  <DiscreteParam ParamName="TestP9B1" />
+  <DiscreteParam ParamName="TestP9B2" />
+  <DiscreteParam ParamName="TestP9B3" />
+  <DiscreteParam ParamName="TestP9B4" />
+  <DiscreteParam ParamName="TestP9B5" />
+  <DiscreteParam ParamName="TestP9B6" />
+  <DiscreteParam ParamName="TestP9B7" />
+  <DiscreteParam ParamName="TestP10B0" />
+  <DiscreteParam ParamName="TestP10B1" />
+  <DiscreteParam ParamName="TestP10B2" />
+  <DiscreteParam ParamName="TestP10B3" />
+  <DiscreteParam ParamName="TestP10B4" />
+  <DiscreteParam ParamName="TestP10B5" />
+  <DiscreteParam ParamName="TestP10B6" />
+  <DiscreteParam ParamName="TestP10B7" />
+  <DiscreteParam ParamName="TestP11B0" />
+  <DiscreteParam ParamName="TestP11B1" />
+  <DiscreteParam ParamName="TestP11B2" />
+  <DiscreteParam ParamName="TestP11B3" />
+  <DiscreteParam ParamName="TestP11B4" />
+  <DiscreteParam ParamName="TestP11B5" />
+  <DiscreteParam ParamName="TestP11B6" />
+  <DiscreteParam ParamName="TestP11B7" />
+  <DiscreteParam ParamName="TestP12B0" />
+  <DiscreteParam ParamName="TestP12B1" />
+  <DiscreteParam ParamName="TestP12B2" />
+  <DiscreteParam ParamName="TestP12B3" />
+  <DiscreteParam ParamName="TestP12B4" />
+  <DiscreteParam ParamName="TestP12B5" />
+  <DiscreteParam ParamName="TestP12B6" />
+  <DiscreteParam ParamName="TestP12B7" />
+  <DiscreteParam ParamName="TestP13B0" />
+  <DiscreteParam ParamName="TestP13B1" />
+  <DiscreteParam ParamName="TestP13B2" />
+  <DiscreteParam ParamName="TestP13B3" />
+  <DiscreteParam ParamName="TestP13B4" />
+  <DiscreteParam ParamName="TestP13B5" />
+  <DiscreteParam ParamName="TestP13B6" />
+  <DiscreteParam ParamName="TestP13B7" />
+  <DiscreteParam ParamName="TestP14B0" />
+  <DiscreteParam ParamName="TestP14B1" />
+  <DiscreteParam ParamName="TestP14B2" />
+  <DiscreteParam ParamName="TestP14B3" />
+  <DiscreteParam ParamName="TestP14B4" />
+  <DiscreteParam ParamName="TestP14B5" />
+  <DiscreteParam ParamName="TestP14B6" />
+  <DiscreteParam ParamName="TestP14B7" />
+  <DiscreteParam ParamName="TestP15B0" />
+  <DiscreteParam ParamName="TestP15B1" />
+  <DiscreteParam ParamName="TestP15B2" />
+  <DiscreteParam ParamName="TestP15B3" />
+  <DiscreteParam ParamName="TestP15B4" />
+  <DiscreteParam ParamName="TestP15B5" />
+  <DiscreteParam ParamName="TestP15B6" />
+  <DiscreteParam ParamName="TestP15B7" />
+</VaisIcd>

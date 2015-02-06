@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<VaisProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.geaviation.com/vais/config">
+  <Macro Name="AppPath" DefaultValue="C:\AVIAGE_SYSTEMS\IMA_SSDL_Config\1000404-X008_IMA_BP4.1.2" ReadOnly="true" />
+  <ProjectVersionInfo SchemaVersion="2" FileVersion="3" VaisToolName="ConfigEditor" VaisToolVersion="558.171.0.0" />
+  <ProjectSetting ParticipantVersionWarnings="true" ParticipantStartupTimeSeconds="5" />
+  <VaisFile IcdImportFile="DiscreteController_SIVB.icdimport" IcdUserFile="DiscreteController_SIVB.icduser" ParticipantConfigurationFile="DiscreteController_SIVB.participant" ComputingResourceConfigurationFile="DiscreteController_SIVB.resource" SystemConfigurationFile="DiscreteController_SIVB.system" />
+  <SettingsDialogWidth>0</SettingsDialogWidth>
+  <SettingsDialogHeight>0</SettingsDialogHeight>
+  <SettingsDialogHidden>false</SettingsDialogHidden>
+</VaisProject>
