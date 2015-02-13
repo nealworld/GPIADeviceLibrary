@@ -58,7 +58,7 @@ static const int fPortCountIndex = 6;
 
 static const int fInvalidHandle = -1;
 
-static const int fLoopPeriod = 100;
+static const int fLoopPeriod = 300;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //  Default Constructor
 //      Initial member vairables, create a broadcast UDP socket to detect GPIA devices.
@@ -862,83 +862,84 @@ void DiscreteGPIADeviceLibrary::sendAllCmds(Device& aDevice, std::map<int, bool>
 }
 
 void DiscreteGPIADeviceLibrary::recvAll(int aCurrentDeviceIndex, std::map<int, bool>& aSendCmdResult_map, 
-	std::map<int, GPIAMessage>& aSendCmd_map)
+	std::map<int, GPIAMessage>& aSendCmd_map, std::map<int,int>& aMessageLostCount_map)
 {
 	char lRecvBuff[4];
 	GPIAMessage lRecvMsg;
 	Device& lDevice = this->mDevices[aCurrentDeviceIndex];
-	std::set<int>::iterator lPortIter = lDevice.mDefinedPort.begin();
-	for ( ; lPortIter != lDevice.mDefinedPort.end(); lPortIter++ )
-    {
-        int lPort = *lPortIter;
-		const char* lCommand = aSendCmd_map[lPort].getMessageBuffer();
-		if(aSendCmdResult_map[lPort]){
-			unsigned int lRecvLength = 0;
-			if ( lDevice.mReadSocket.receive( lRecvBuff, GPIAMessage::getBufferSize(), 0, &lRecvLength ) )
-			{
-				lRecvMsg.setContent( lRecvBuff, GPIAMessage::getBufferSize() );
+
+	unsigned int lRecvLength = 0;
+	const char* lCommand;
+
+	while ( lDevice.mReadSocket.receive( lRecvBuff, GPIAMessage::getBufferSize(), 0, &lRecvLength ) )
+	{
+		lRecvMsg.setContent( lRecvBuff, GPIAMessage::getBufferSize() );
+		int lPort = lRecvMsg.getPortNumber();
+		aMessageLostCount_map[lPort] = 0;
+		lCommand = aSendCmd_map[lPort].getMessageBuffer();
+
 #if defined( _DEBUG )
-				lDevice.mlog << "<<recvAll fun>>Device = " << lDevice.mHostName
-						<< ", IP = " << lDevice.mReadSocket.IPToString( lDevice.mIPAddress )
-						<< ", Command = " << std::hex;
-				for ( int lIndex = 0; lIndex < GPIAMessage::getBufferSize(); lIndex++ )
-				{
-					lDevice.mlog << (unsigned int)(unsigned char)lCommand[ lIndex ] << " ";
-				}
-				lDevice.mlog << ", Result = ";
-				for ( int lIndex = 0; lIndex < GPIAMessage::getBufferSize(); lIndex++ )
-				{
-					lDevice.mlog << (unsigned int)(unsigned char)lRecvBuff[ lIndex ] << " ";
-				}
+		lDevice.mlog << "<<recvAll fun>>Device = " << lDevice.mHostName
+				<< ", IP = " << lDevice.mReadSocket.IPToString( lDevice.mIPAddress )
+				<< ", Command = " << std::hex;
+		for ( int lIndex = 0; lIndex < GPIAMessage::getBufferSize(); lIndex++ )
+		{
+			lDevice.mlog << (unsigned int)(unsigned char)lCommand[ lIndex ] << " ";
+		}
+		lDevice.mlog << ", Result = ";
+		for ( int lIndex = 0; lIndex < GPIAMessage::getBufferSize(); lIndex++ )
+		{
+			lDevice.mlog << (unsigned int)(unsigned char)lRecvBuff[ lIndex ] << " ";
+		}
 				
-				if ( lRecvMsg.getStatus() != GPIAMessage::Normal || lRecvMsg.getPortNumber() != lPort)
-				{
-					lDevice.mlog << "***************************ERROR!!!!!";
-				}
-				lDevice.mlog << std::endl;
+		if ( lRecvMsg.getStatus() != GPIAMessage::Normal)
+		{
+			lDevice.mlog << "***************************ERROR!!!!!";
+		}
+		lDevice.mlog << std::endl;
 #endif
-				lDevice.mReadMutex.lock();
-				lDevice.mPortCache[ lPort ].first = lRecvMsg.getData();
-				//only if the status is normal, set the validity to true
-				lDevice.mPortCache[ lPort ].second = ( lRecvMsg.getStatus() == GPIAMessage::Normal && lRecvMsg.getPortNumber() == lPort);
-				lDevice.mReadMutex.unlock();
+		lDevice.mReadMutex.lock();
+		lDevice.mPortCache[ lPort ].first = lRecvMsg.getData();
+		//only if the status is normal, set the validity to true
+		lDevice.mPortCache[ lPort ].second = ( lRecvMsg.getStatus() == GPIAMessage::Normal);
+		lDevice.mReadMutex.unlock();
 
-				lDevice.mRecordMutex.lock();
-				if ( lDevice.mIsRecording )
-				{
-					if ( !saveData( aCurrentDeviceIndex, lPort, lRecvMsg.getData() ) )
-					{
-						lDevice.mIsRecording = false;
-						lDevice.mRecordingStream.close();
-					}
-				}
-				lDevice.mRecordMutex.unlock();
-			}
-			else
+		lDevice.mRecordMutex.lock();
+		if ( lDevice.mIsRecording )
+		{
+			if ( !saveData( aCurrentDeviceIndex, lPort, lRecvMsg.getData() ) )
 			{
-				lDevice.mReadMutex.lock();
-				//if no response from GPIA, set the validity of the data to false
-				lDevice.mPortCache[ lPort ].second = false;
-				lDevice.mReadMutex.unlock();
-
-#if defined( _DEBUG )
-					lDevice.mlog << "<<recvAll FUN>>Failed to receive reponse from GPIA. Device = " << lDevice.mHostName
-						<< ", IP = " << lDevice.mReadSocket.IPToString( lDevice.mIPAddress )
-						<< ", Command = " << std::hex;
-					for ( int lIndex = 0; lIndex < GPIAMessage::getBufferSize(); lIndex++ )
-					{
-						lDevice.mlog << (unsigned int)(unsigned char)lCommand[ lIndex ] << " ";
-					}
-					lDevice.mlog << std::endl;
-#endif
+				lDevice.mIsRecording = false;
+				lDevice.mRecordingStream.close();
 			}
 		}
-		else
-		{
+		lDevice.mRecordMutex.unlock();
+	}
+
+	std::set<int>::iterator lPortIter =  lDevice.mDefinedPort.begin();
+    for ( ; lPortIter !=  lDevice.mDefinedPort.end(); lPortIter++ )
+    {
+        int lPort = *lPortIter;
+		if(aMessageLostCount_map[lPort] != 0 && aMessageLostCount_map[lPort] != 4){
+			aMessageLostCount_map[lPort]++;
+		}
+
+		if(aMessageLostCount_map[lPort] == 4){
 			lDevice.mReadMutex.lock();
-            //if no response from GPIA, set the validity of the data to false
-            lDevice.mPortCache[ lPort ].second = false;
-            lDevice.mReadMutex.unlock();
+			//if no response from GPIA, set the validity of the data to false
+			lDevice.mPortCache[ lPort ].second = false;
+			lDevice.mReadMutex.unlock();
+
+#if defined( _DEBUG )
+			lDevice.mlog << "<<recvAll FUN>>Failed to receive reponse from GPIA. Device = " << lDevice.mHostName
+				<< ", IP = " << lDevice.mReadSocket.IPToString( lDevice.mIPAddress )
+				<< ", Command = " << std::hex;
+			for ( int lIndex = 0; lIndex < GPIAMessage::getBufferSize(); lIndex++ )
+			{
+				lDevice.mlog << (unsigned int)(unsigned char)lCommand[ lIndex ] << " ";
+			}
+			lDevice.mlog << std::endl;
+#endif
 		}
 	}
 }
@@ -946,11 +947,18 @@ void DiscreteGPIADeviceLibrary::readData( int aDeviceIndex )
 {
 	std::map<int, bool> lSendCmdResult_map;
 	std::map<int, GPIAMessage> lSendCmd_map;
-
+	std::map<int, int> lMessageLostCountMap;
 #if defined( _DEBUG )
 	mDevices[ aDeviceIndex ].mlog.open( mDevices[ aDeviceIndex ].mReadSocket.
 		IPToString( mDevices[ aDeviceIndex ].mIPAddress ) + "_readDatalog.txt" , std::ios::app);
 #endif
+
+	std::set<int>::iterator lPortIter =  mDevices[ aDeviceIndex ].mDefinedPort.begin();
+    for ( ; lPortIter !=  mDevices[ aDeviceIndex ].mDefinedPort.end(); lPortIter++ )
+    {
+        int lPort = *lPortIter;
+		lMessageLostCountMap[lPort] = 1;
+	}
 
     while ( mIsOpen )
     {
@@ -960,7 +968,16 @@ void DiscreteGPIADeviceLibrary::readData( int aDeviceIndex )
 
 			Sleep( fLoopPeriod );
 
-			recvAll(aDeviceIndex, lSendCmdResult_map, lSendCmd_map);
+			std::set<int>::iterator lPortIter =  mDevices[ aDeviceIndex ].mDefinedPort.begin();
+			for ( ; lPortIter !=  mDevices[ aDeviceIndex ].mDefinedPort.end(); lPortIter++ )
+			{
+				int lPort = *lPortIter;
+				if(lMessageLostCountMap[lPort] == 0){
+					lMessageLostCountMap[lPort] = 1;
+				}
+			}
+
+			recvAll(aDeviceIndex, lSendCmdResult_map, lSendCmd_map, lMessageLostCountMap);
 		}
     }
 

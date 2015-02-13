@@ -351,7 +351,7 @@ private:
 
 	void sendAllCmds(Device& aDevice, std::map<int, bool>& aSendCmdResult_map, std::map<int, GPIAMessage>& aSendCmd_map);
 
-	void recvAll(int aCurrentDeviceIndex, std::map<int, bool>& aSendCmdResult_map, std::map<int, GPIAMessage>& aSendCmd_map);
+	void recvAll(int aCurrentDeviceIndex, std::map<int, bool>& aSendCmdResult_map, std::map<int, GPIAMessage>& aSendCmd_map, std::map<int,int>& aMessageLostCount_map);
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
